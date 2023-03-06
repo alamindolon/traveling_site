@@ -28,6 +28,8 @@ var carobject = {
   function displayService(service)
   {
     const mainSection = document.getElementById('main_section');
+
+    const stringfiledobj = JSON.stringify(service);
     const div = document.createElement('div');
 
     div.innerHTML = `
@@ -45,7 +47,7 @@ var carobject = {
           </p>
 
               <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" onclick = 'handleBooking(${stringfiledobj})' data-bs-target="#exampleModal">
       Launch demo modal
     </button>
 
@@ -62,3 +64,54 @@ var carobject = {
   displayService(busobject);
   displayService(carobject);
   displayService(bikeobject);
+
+  function handleBooking(obj)
+  {
+    const modelBody = document.getElementById('model_body');
+    const stringfilesubdobj = JSON.stringify(obj);
+     modelBody.innerHTML = `
+     
+     <div class="card mx-auto" style="width: 18rem;">
+  <img src=${obj.imageurl} class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">Vehicle Model : ${obj.vehicle}</h5>
+    
+    <p class="card-text">Description: ${obj.description}</p>
+
+    <p class="card-text"><small class="text-muted px-4" > Fare Per kilo: ${obj.farePerkilo}</small>
+    <small class="text-muted "> Capacity: ${obj.capacity}</small></p>
+    
+    <div class="d-flex-colum ">
+    <p class="card-text">Fare :<small class="text-muted " id= 'fare'></p>
+
+    <p class="card-text">Tax :<small class="text-muted " id = 'tax'> </p>
+   
+
+    <p class="card-text">Total Cost : <small class="text-muted " id = 'total_cost'> </p>
+    </div>
+    </div>
+
+    <div class="d-flex-colom ">
+              <input class="form-control mt-2" id = "distance_input"
+            type="number" placeholder="how go to Kilo?" aria-label="Search">
+              <input class="form-control mt-2" id = "quantity_input" type="number" placeholder="How much veicle?" aria-label="Search">
+              <button class="btn btn-outline-success mt-2" type="submit" onclick = 'calculatorCost(${stringfilesubdobj})'>Search</button>
+            </div>
+  </div>
+</div>
+     `
+  }
+
+  function calculatorCost(obj)
+  {
+    
+    const quantity = document.getElementById('quantity_input').value;
+    const distance  = document.getElementById('distance_input').value;
+    console.log(obj);
+
+    const farDiv  = document.getElementById('fare');
+    farDiv.innerHTML = quantity * distance * obj.farePerkilo;
+
+
+
+  }
